@@ -20,6 +20,14 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const [theme, setTheme] = useState(() => localStorage.getItem("theme") || "light");
+
+  // Apply the theme to the page and remember the choice for next time.
+  useEffect(() => {
+    document.body.className = theme;
+    localStorage.setItem("theme", theme);
+  }, [theme]);
+
   // Load tasks once when the app mounts.
   useEffect(() => {
     async function loadTasks() {
@@ -103,6 +111,14 @@ function App() {
 
   return (
     <main className="app">
+      <button
+        className="theme-toggle"
+        aria-label="Toggle dark mode"
+        onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+      >
+        {theme === "light" ? "🌙" : "☀️"}
+      </button>
+
       <h1>Task Manager Dashboard</h1>
 
       {error && <p className="error-banner">{error}</p>}
